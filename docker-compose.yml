@@ -12,7 +12,7 @@
 services:
   # One-shot: apply pending migrations before the app services start.
   migrate:
-    image: "${NOTTEN_IMAGE:-ghcr.io/shlee-dev012/notten_event:latest}"
+    image: "${NATTEN_IMAGE:-ghcr.io/shlee-dev012/natten_event:latest}"
     command: npx prisma migrate deploy
     environment:
       DATABASE_URL: "file:/data/notten.db"
@@ -21,7 +21,7 @@ services:
     restart: "no"
 
   participant:
-    image: "${NOTTEN_IMAGE:-ghcr.io/shlee-dev012/notten_event:latest}"
+    image: "${NATTEN_IMAGE:-ghcr.io/shlee-dev012/natten_event:latest}"
     command: npm run start:participant
     environment:
       NODE_ENV: production
@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   organizer:
-    image: "${NOTTEN_IMAGE:-ghcr.io/shlee-dev012/notten_event:latest}"
+    image: "${NATTEN_IMAGE:-ghcr.io/shlee-dev012/natten_event:latest}"
     command: npm run start:organizer
     environment:
       NODE_ENV: production

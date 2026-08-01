@@ -62,7 +62,7 @@ export async function GET(
   // Prepend a UTF-8 BOM so Excel detects the encoding for Korean text.
   const BOM = String.fromCharCode(0xfeff);
   const body = BOM + csv;
-  const filename = `notten-event-${eventId}-participants.csv`;
+  const filename = `natten-event-${eventId}-participants.csv`;
 
   return new NextResponse(body, {
     headers: {

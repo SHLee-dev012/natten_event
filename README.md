@@ -32,8 +32,8 @@
 
 ```bash
 # 1) 저장소 클론
-git clone git@github.com:SHLee-dev012/notten_event.git
-cd notten_event
+git clone git@github.com:SHLee-dev012/natten_event.git
+cd natten_event
 
 # 2) 의존성 설치 (postinstall이 Prisma 클라이언트도 생성)
 npm install
@@ -74,7 +74,7 @@ npm run build:organizer   && npm run start:organizer     # → http://localhost:
 
 ```bash
 # 1) 설정: 이미지 태그 + 도메인 (Caddy용)
-cp deploy.env.example .env      # NOTTEN_IMAGE / PARTICIPANT_DOMAIN / ORGANIZER_DOMAIN 편집
+cp deploy.env.example .env      # NATTEN_IMAGE / PARTICIPANT_DOMAIN / ORGANIZER_DOMAIN 편집
 
 # 2) 이미지 받기 (GHCR 패키지가 private면 먼저: docker login ghcr.io)
 docker compose pull
