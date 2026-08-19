@@ -18,8 +18,14 @@ function hashPassword(password: string): string {
 }
 
 // Build an ISO timestamp for the festival (around 2026-07-25).
+// The offset is explicit (mirrors FESTIVAL_UTC_OFFSET in src/lib/events.ts):
+// `new Date(y, m, d, h)` would read the *runtime's* timezone, so seeding
+// inside the container (UTC) would push every demo event 9 hours late.
 function at(day: number, hour: number, minute = 0): string {
-  return new Date(2026, 6, day, hour, minute, 0).toISOString();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return new Date(
+    `2026-07-${pad(day)}T${pad(hour)}:${pad(minute)}:00+09:00`,
+  ).toISOString();
 }
 
 const now = new Date().toISOString();

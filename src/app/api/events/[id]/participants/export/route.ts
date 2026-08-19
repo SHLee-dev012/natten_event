@@ -1,18 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
-import { statusLabel } from "@/lib/events";
+import { formatSheetTime, statusLabel } from "@/lib/events";
 
 // Quote a CSV cell if it contains a delimiter, quote or newline.
 function csvCell(value: string | number): string {
   const s = String(value ?? "");
   return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-}
-
-// "2026-07-25 12:00" in local time — friendlier than ISO for spreadsheets.
-function formatLocal(d: Date): string {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 // GET /api/events/:id/participants/export — download the roster as CSV
@@ -52,7 +46,7 @@ export async function GET(
     p.user.name,
     p.user.email,
     statusLabel(p.status),
-    formatLocal(p.createdAt),
+    formatSheetTime(p.createdAt),
   ]);
 
   const csv = [header, ...rows]

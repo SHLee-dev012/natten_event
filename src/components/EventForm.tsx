@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { CATEGORIES } from "@/lib/events";
+import {
+  CATEGORIES,
+  dateToFestivalInput,
+  festivalInputToDate,
+} from "@/lib/events";
 
 const inputClass = "field";
 const labelClass = "text-sm font-medium muted";
@@ -18,14 +22,6 @@ export type EditableEvent = {
   capacity: number | null;
 };
 
-// Convert an ISO timestamp into the "YYYY-MM-DDTHH:mm" value a
-// datetime-local input expects, in the viewer's local time.
-function toLocalInput(iso: string): string {
-  const d = new Date(iso);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
 export function EventForm({ event }: { event?: EditableEvent }) {
   const router = useRouter();
   const isEdit = Boolean(event);
@@ -34,8 +30,8 @@ export function EventForm({ event }: { event?: EditableEvent }) {
   const [description, setDescription] = useState(event?.description ?? "");
   const [category, setCategory] = useState<string>(event?.category ?? CATEGORIES[0].key);
   const [location, setLocation] = useState(event?.location ?? "");
-  const [startAt, setStartAt] = useState(event ? toLocalInput(event.startAt) : "");
-  const [endAt, setEndAt] = useState(event ? toLocalInput(event.endAt) : "");
+  const [startAt, setStartAt] = useState(event ? dateToFestivalInput(event.startAt) : "");
+  const [endAt, setEndAt] = useState(event ? dateToFestivalInput(event.endAt) : "");
   const [capacity, setCapacity] = useState(
     event?.capacity != null ? String(event.capacity) : "",
   );
@@ -48,7 +44,7 @@ export function EventForm({ event }: { event?: EditableEvent }) {
 
     if (!title.trim()) return setError("제목을 입력해주세요.");
     if (!startAt || !endAt) return setError("시작/종료 시간을 입력해주세요.");
-    if (new Date(endAt) < new Date(startAt))
+    if (festivalInputToDate(endAt) < festivalInputToDate(startAt))
       return setError("종료 시간은 시작 시간 이후여야 합니다.");
 
     setPending(true);
@@ -60,8 +56,8 @@ export function EventForm({ event }: { event?: EditableEvent }) {
         description,
         category,
         location,
-        startAt: new Date(startAt).toISOString(),
-        endAt: new Date(endAt).toISOString(),
+        startAt: festivalInputToDate(startAt).toISOString(),
+        endAt: festivalInputToDate(endAt).toISOString(),
         capacity: capacity ? Number(capacity) : null,
       }),
     });

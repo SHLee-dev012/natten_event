@@ -2,15 +2,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser, isAdmin } from "@/lib/auth";
-import { formatEventTime, statusLabel } from "@/lib/events";
+import { formatDateTime, formatEventTime, statusLabel } from "@/lib/events";
 import { CheckInButton } from "@/components/CheckInButton";
-
-const joinFmt = new Intl.DateTimeFormat("ko-KR", {
-  month: "long",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 export const dynamic = "force-dynamic";
 
@@ -105,7 +98,7 @@ export default async function ParticipantsPage({
                     </div>
                     <p className="text-xs muted">{p.user.email}</p>
                     <time className="text-xs faint">
-                      {joinFmt.format(p.createdAt)} 신청
+                      {formatDateTime(p.createdAt)} 신청
                     </time>
                   </div>
                   <CheckInButton

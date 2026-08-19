@@ -15,6 +15,7 @@ services:
     image: "${NATTEN_IMAGE:-ghcr.io/shlee-dev012/natten_event:latest}"
     command: npx prisma migrate deploy
     environment:
+      TZ: Asia/Seoul
       DATABASE_URL: "file:/data/notten.db"
     volumes:
       - notten-db:/data
@@ -26,6 +27,9 @@ services:
     environment:
       NODE_ENV: production
       NOTTEN_ROLE: participant
+      # Display is pinned to Asia/Seoul in code; this keeps logs and any
+      # future timezone-naive code on festival time too.
+      TZ: Asia/Seoul
       DATABASE_URL: "file:/data/notten.db"
     volumes:
       - notten-db:/data
@@ -42,6 +46,7 @@ services:
     environment:
       NODE_ENV: production
       NOTTEN_ROLE: organizer
+      TZ: Asia/Seoul
       DATABASE_URL: "file:/data/notten.db"
     volumes:
       - notten-db:/data
