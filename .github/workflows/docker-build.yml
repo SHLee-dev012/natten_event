@@ -1,11 +1,13 @@
 name: Build Docker image
 
+# 서비스 종료(2026-08-21)로 자동 빌드를 껐다. GHCR에 새 이미지가 올라가지 않는다.
+# 다시 올릴 때는 아래 주석 처리된 push / pull_request 블록을 되살리면 된다.
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "**.md"
-  pull_request:
+  # push:
+  #   branches: [main]
+  #   paths-ignore:
+  #     - "**.md"
+  # pull_request:
   workflow_dispatch:
 
 jobs:
